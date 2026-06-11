@@ -26,6 +26,13 @@ FROM PortfolioProject..CovidDeath
 GROUP BY country, population
 ORDER BY MaxPercentPopulationinfected desc
 
+CREATE VIEW HighestInfectedCount as
+SELECT country, population, MAX(total_cases) as HighestInfectionCount, MAX((total_cases/population))*100 as MaxPercentPopulationinfected
+FROM PortfolioProject..CovidDeath
+--WHERE total_cases > 0 and country = 'Nigeria'
+GROUP BY country, population
+--ORDER BY MaxPercentPopulationinfected desc
+
 -- Showing country with highest death count
 
 SELECT country, MAX(cast(total_deaths as int)) as TotalDeathCount
@@ -34,6 +41,14 @@ FROM PortfolioProject..CovidDeath
 WHERE continent is not null
 GROUP BY country
 ORDER BY TotalDeathCount desc
+
+CREATE VIEW HighestDeathCount as
+SELECT country, MAX(cast(total_deaths as int)) as TotalDeathCount
+FROM PortfolioProject..CovidDeath
+--WHERE total_cases > 0 and country = 'Nigeria'
+WHERE continent is not null
+GROUP BY country
+--ORDER BY TotalDeathCount desc
 
 -- Let's break this down by continent
 -- Showing continent with highest death count
@@ -44,6 +59,14 @@ FROM PortfolioProject..CovidDeath
 WHERE continent is not null
 GROUP BY continent
 ORDER BY TotalDeathCount desc
+
+CREATE VIEW TotalDeathCount as
+SELECT continent, MAX(cast(total_deaths as int)) as TotalDeathCount
+FROM PortfolioProject..CovidDeath
+--WHERE total_cases > 0 and country = 'Nigeria'
+WHERE continent is not null
+GROUP BY continent
+--ORDER BY TotalDeathCount desc
 
 -- Global Numbers
 
@@ -59,6 +82,13 @@ FROM PortfolioProject..CovidDeath
 WHERE new_cases > 0 and continent is not null
 --GROUP BY date
 ORDER BY 1,2
+
+CREATE VIEW GlobalNumber as
+SELECT SUM(new_cases) as total_cases, SUM(cast(new_deaths as int)) as total_deaths, SUM(cast(new_deaths as int))/ SUM(new_cases)*100 as DeathPercentage
+FROM PortfolioProject..CovidDeath
+WHERE new_cases > 0 and continent is not null
+--GROUP BY date
+--ORDER BY 1,2
 
 --Looking at the second table
 
