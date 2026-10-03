@@ -1,0 +1,116 @@
+Automation
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+from bs4 import BeautifulSoup
+import pandas as pd
+import re
+import requests
+import time
+
+
+def get_table():
+
+    
+    url = "https://www.upgrad.com/study-abroad/articles/top-10-universities-in-the-world/"
+
+    response = requests.get(url, verify=False)
+
+    soup = BeautifulSoup(response.text, "html.parser")
+
+    data = []
+
+    for university in soup.find_all("h3"):
+        item = university.get_text(strip=True)
+
+        if re.match(r"^\d+\.\s*", item):
+            item = re.sub(r"^\d+\.\s*", "", item)
+
+        data.append(item)
+
+        if item == "National University of Singapore":
+            break
+
+    df = pd.DataFrame(data, columns=["University"])
+
+    data_1 = []
+
+    for table in soup.find_all("tr"):
+        cells = table.find_all("td")
+
+        data_1.append({
+            "Parameter": cells[0].get_text(strip=True),
+            "Details": cells[1].get_text(strip=True)
+        })
+
+    data_2 = []
+
+    for item in data_1:
+
+        if item["Parameter"] == "Parameter":
+            continue 
+        
+        data_2.append(item)
+    
+        if item["Details"] == "NUS ASEAN Undergraduate Scholarship, Science & Technology Award":
+            break
+        
+    df_2 =pd.DataFrame(data_2)
+
+    df_2["University"] = [
+        university
+        for university in df["University"]
+        for _ in range(7)
+    ]
+
+    Complete_List = df_2[["University", "Parameter", "Details"]]
+
+    return Complete_List
+
+Complete_List_Old = get_table()
+
+while True:
+
+    time.sleep(3600)
+
+    Complete_List_New = get_table()
+
+    if Complete_List_Old.equals(Complete_List_New):
+        print("No Changes")
+    else:
+        print("There's a New Input")
+
+    Complete_List_New
+
+    Complete_List_Old = Complete_List_New.copy()
+----
+
+
++*Out[ ]:*+
+----
+C:\Users\HP\AppData\Local\Programs\Python\Python313\Lib\site-packages\urllib3\connectionpool.py:1110: InsecureRequestWarning: Unverified HTTPS request is being made to host 'www.upgrad.com'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+
+----
