@@ -1,0 +1,217 @@
++*In[78]:*+
+[source, ipython3]
+----
+from bs4 import BeautifulSoup
+import requests
+import pandas as pd
+import re
+import time
+
+def get_table():
+
+    url = "https://www.metacritic.com/pictures/best-movies-of-2025/6"
+
+    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36"}
+
+    response = requests.get(url, headers=headers)
+
+    soup = BeautifulSoup(response.text, "html.parser")
+
+    data = []
+
+    for row in soup.find_all("h2"):
+        cells = row.get_text(strip=True)
+
+        data.append(cells)
+
+    df = pd.DataFrame(data, columns=["Titles"])
+
+    data_1 = []
+
+    for item in data:
+    
+        if re.match(r"^\d+\.\s*", item):
+            item = re.sub(r"^\d+\.\s*", "", item)
+        
+        data_1.append(item)
+    
+        if item == "#1:One Battle After Another":
+            break
+
+    df_1 = pd.DataFrame(data_1, columns=["Titles"])
+
+    return df_1
+
+df_1_new = get_table()
+
+while True:
+
+    time.sleep(3600)
+
+    df_1_old = get_table()
+
+    if df_1_old.equals(df_1_new):
+        print("No changes")
+        
+    else:
+        print("There's a new input")
+        cursor.execute("DELETE FROM BestMovies")
+
+        for _, row in df_1_new.iterrows():
+
+            cursor.execute("""
+                INSERT INTO BestMovies
+                (TITLE)
+                VALUES(?)
+            """,
+            row["Titles"],
+                          )
+        connection.commit()
+
+        print("SQL Updated Successfully!")
+
+
+----
+
+
++*Out[78]:*+
+----
+No changes
+
+
+    ---------------------------------------------------------------------------
+
+    KeyboardInterrupt                         Traceback (most recent call last)
+
+    Cell In[78], line 46
+         42 df_1_new = get_table()
+         43 
+         44 while True:
+         45 
+    ---> 46     time.sleep(15)
+         47 
+         48     df_1_old = get_table()
+         49 
+    
+
+    KeyboardInterrupt: 
+
+----
+
+
++*In[58]:*+
+[source, ipython3]
+----
+import pyodbc
+
+print(pyodbc.drivers())
+----
+
+
++*Out[58]:*+
+----
+['SQL Server', 'ODBC Driver 18 for SQL Server', 'ODBC Driver 17 for SQL Server']
+----
+
+
++*In[63]:*+
+[source, ipython3]
+----
+#CONNECT PYODBC TO SQL
+
+
+connection = pyodbc.connect(
+
+    "DRIVER={ODBC Driver 18 for SQL Server};"
+    "SERVER=localhost\\MSSQLSERVER01;"
+    "DATABASE=AnimanData;"
+    "Trusted_Connection=yes;"
+    "TrustServerCertificate=yes;"
+    )
+cursor = connection.cursor()
+
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+
+----
