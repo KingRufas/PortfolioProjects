@@ -70,32 +70,8 @@ while True:
 
         print("SQL Updated Successfully!")
 
-
-----
-
-
-+*Out[78]:*+
 ----
 No changes
-
-
-    ---------------------------------------------------------------------------
-
-    KeyboardInterrupt                         Traceback (most recent call last)
-
-    Cell In[78], line 46
-         42 df_1_new = get_table()
-         43 
-         44 while True:
-         45 
-    ---> 46     time.sleep(15)
-         47 
-         48     df_1_old = get_table()
-         49 
-    
-
-    KeyboardInterrupt: 
-
 ----
 
 
@@ -111,11 +87,6 @@ print(pyodbc.drivers())
 +*Out[58]:*+
 ----
 ['SQL Server', 'ODBC Driver 18 for SQL Server', 'ODBC Driver 17 for SQL Server']
-----
-
-
-+*In[63]:*+
-[source, ipython3]
 ----
 #CONNECT PYODBC TO SQL
 
@@ -133,85 +104,3 @@ cursor = connection.cursor()
 ----
 
 
-+*In[ ]:*+
-[source, ipython3]
-----
-
-----
-
-
-+*In[ ]:*+
-[source, ipython3]
-----
-
-----
-
-
-+*In[ ]:*+
-[source, ipython3]
-----
-
-----
-
-
-+*In[ ]:*+
-[source, ipython3]
-----
-
-----
-
-
-+*In[ ]:*+
-[source, ipython3]
-----
-
-----
-
-
-+*In[ ]:*+
-[source, ipython3]
-----
-
-----
-
-
-+*In[ ]:*+
-[source, ipython3]
-----
-
-----
-
-
-+*In[ ]:*+
-[source, ipython3]
-----
-
-----
-
-
-+*In[ ]:*+
-[source, ipython3]
-----
-
-----
-
-
-+*In[ ]:*+
-[source, ipython3]
-----
-
-----
-
-
-+*In[ ]:*+
-[source, ipython3]
-----
-
-----
-
-
-+*In[ ]:*+
-[source, ipython3]
-----
-
-----
